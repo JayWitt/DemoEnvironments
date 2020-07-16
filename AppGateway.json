@@ -1,45 +1,24 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "webAppName": {
-            "defaultValue": "myWebApp",
-            "type": "string"
-        },
-        "virtualNetworkName": {
-            "defaultValue": "myVirtualNetwork",
-            "type": "string"
-        },
-        "appGatewaySubnetName": {
-            "defaultValue": "myAppGatewaySubnet",
-            "type": "string"
-        },
-        "appGatewayName": {
-            "defaultValue": "myAppGateway",
-            "type": "string"
-        },
-        "location": {
-            "defaultValue": "[resourceGroup().location]",
-            "type": "string"
-        }
-     },
+    "parameters": {},
     "variables": {
-        "location": "[parameters('location')]",
-        "virtualNetworkName": "[concat(parameters('virtualNetworkName'), '-', uniqueString(resourceGroup().id))]",
+        "location": "[resourceGroup().location]",
+        "virtualNetworkName": "[concat('virtualNetworkName-', uniqueString(utcnow()))]",
         "virtualNetworkAddressPrefix": "10.0.0.0/20",
-        "virtualNetworkSubnetName": "[parameters('appGatewaySubnetName')]",
+        "virtualNetworkSubnetName": "[concat('appGatewaySubnetName', uniqueString(utcnow()))]",
         "virtualNetworkSubnetPrefix": "10.0.0.0/24",
         "virtualNetworkId": "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
         "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), variables('virtualNetworkSubnetName'))]",
-        "publicIpAddressName": "[concat('myAppGatewayPublicIp', '-', uniqueString(resourceGroup().id))]",
+        "publicIpAddressName": "[concat('myAppGatewayPublicIp', '-', uniqueString(utcnow()))]",
         "publicIpAddressSku": "Standard",
         "publicIpAddressAllocationType": "Static",
         "publicIpAddressId": "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIpAddressName'))]",
-        "webAppName": "[concat(parameters('webAppName'), '-', uniqueString(resourceGroup().id))]",
-        "webAppPlanName": "[concat(parameters('webAppName'), 'Plan', '-', uniqueString(resourceGroup().id))]",
+        "webAppName": "[concat('webAppName-', uniqueString(utcnow()))]",
+        "webAppPlanName": "[concat(variables('webAppName'), 'Plan', '-', uniqueString(utcnow()))]",
         "webAppPlanSku": "S1",
         "webAppPlanId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppPlanName'))]",
-        "applicationGatewayName": "[concat(parameters('appGatewayName'), '-', uniqueString(resourceGroup().id))]",
+        "applicationGatewayName": "[concat('appGatewayName-', uniqueString(utcnow()))]",
         "applicationGatewaySkuSize": "Standard_v2",
         "applicationGatewayTier": "Standard_v2",
         "applicationGatewayAutoScaleMinCapacity": 2,
