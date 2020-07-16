@@ -2,10 +2,18 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-           "utcValue": {
+        "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow()]"
-        }     
+        },
+        "size": {
+            "type": "string",
+            "allowedValues": [
+                "Standard_v2",
+                "WAF_v2"
+            ],
+            "defaultValue": "Standard_v2"
+        }      
     },
     "variables": {
         "location": "[resourceGroup().location]",
@@ -24,8 +32,8 @@
         "webAppPlanSku": "S1",
         "webAppPlanId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppPlanName'))]",
         "applicationGatewayName": "[concat('appGatewayName-', uniqueString(parameters('utcValue')))]",
-        "applicationGatewaySkuSize": "Standard_v2",
-        "applicationGatewayTier": "Standard_v2",
+        "applicationGatewaySkuSize": "parameters('size')",
+        "applicationGatewayTier": "parameters('size')",
         "applicationGatewayAutoScaleMinCapacity": 2,
         "applicationGatewayAutoScaleMaxCapacity": 5,
         "appGwIpConfigName": "appGatewayIpConfigName",
